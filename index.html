@@ -17,69 +17,52 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            min-height: 100vh;
-            width: 100vw; /* Ensure the wrapper spans the full viewport */
+            min-height: 100%;
+        }
+
+        button::-moz-focus-inner {
+            border: 0;
+            padding: 0;
         }
 
         #calendari {
-            width: 100%; /* Flexible width */
-            max-width: 1000px; /* Optionally set a maximum width for the calendar */
-            min-width: 300px; /* Set a minimum width for the calendar */
+            margin: 0 auto;
             font-size: 14px;
             resize: both;
-            overflow: auto;
+            overflow: hidden; /* Eltávolítottam az automatikus scroll-t */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         table {
-            width: 100%; /* Ensure the calendar table is responsive */
-            max-width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
             box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
             background-color: #fff;
-            position: relative; /* Change from absolute to relative for responsiveness */
+            width: 90vw; /* Dinamikus szélesség, a frame-hez igazítva */
+            height: auto; /* Magasság arányosan igazodik a szélességhez */
+            transform-origin: top left; /* A skálázás kezdőpontja */
         }
 
         td, th {
             text-align: center;
             background-color: #fff;
+            font-size: 1.2vw; /* Dinamikus betűméret */
         }
 
         th {
             padding: 10px;
+            font-size: 1.5vw; /* Dinamikus cím betűméret */
         }
 
         tr:first-child th {
-            font-size: 20px;
+            font-size: 2vw;
             font-weight: bold;
             border-left: none;
             border-top: none;
-        }
-
-        td:last-child, th:last-child {
-            border-right: none;
-        }
-
-        th {
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
-            background-color: #334b70;
-            color: #fff;
-            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-            font-weight: normal;
-        }
-
-        th .any {
-            font-size: 12px;
-            font-weight: normal;
-            display: block;
-            text-shadow: none;
-            color: rgba(0, 0, 0, 0.4);
-        }
-
-        td {
-            padding: 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         td>span {
@@ -88,40 +71,14 @@
             display: block;
             border: 2px solid transparent;
             transition: border 0.3s ease;
-        }
-
-        td:nth-child(even)>span {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        td:last-child>span, td:nth-child(6)>span {
-            color: #334b70;
-        }
-
-        td.avui>span {
-            font-weight: bold;
-            background-color: #334b70;
-            color: #fff;
-            border: 2px solid rgba(0, 0, 0, 0.1);
-        }
-
-        td.fora > span {
-            opacity: 0.2;
-        }
-
-        td > span:hover {
-            background: #aeb5cf;
-            color: #fff;
+            font-size: 1.2vw; /* Dinamikus cella betűméret */
         }
 
         .boto-next, .boto-prev {
             background: rgba(0, 0, 0, 0.1);
             color: #fff;
-            font-family: inherit;
             border: none;
             font-size: 18px;
-            font-weight: bold;
-            text-shadow: inherit;
             padding: 2px 10px 5px 10px;
             line-height: 1px;
             height: 30px;
@@ -142,7 +99,8 @@
             padding-right: 13px;
         }
 
-        .boto-next:hover, .boto-prev:hover {
+        .boto-next:hover,
+        .boto-prev:hover {
             background: rgba(0, 0, 0, 0.2);
         }
 
@@ -154,35 +112,24 @@
             outline: none;
         }
 
-        footer {
-            text-align: center;
-            color: #ddd;
-            font-weight: normal;
-            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-            font-size: 0.8em;
-            padding: 20px;
-        }
-
-        footer a, footer a:link {
-            color: #fff;
-            text-decoration: none;
-        }
     </style>
 </head>
 
 <body>
+
     <div class="wrapper">
         <div id="calendari"></div>
     </div>
 
     <script>
         var mesos = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var dies = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
+        var dies = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var dies_abr = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-        Number.prototype.pad = function(num) {
+        Number.prototype.pad = function (num) {
             var str = '';
-            for (var i = 0; i < (num - this.toString().length); i++) str += '0';
+            for (var i = 0; i < (num - this.toString().length); i++)
+                str += '0';
             return str += this.toString();
         }
 
@@ -190,10 +137,7 @@
             var original = widget.getElementsByClassName('actiu')[0];
             if (typeof original === 'undefined') {
                 original = document.createElement('table');
-                original.setAttribute('data-actual',
-                    data.getFullYear() + '/' +
-                    data.getMonth().pad(2) + '/' +
-                    data.getDate().pad(2))
+                original.setAttribute('data-actual', data.getFullYear() + '/' + data.getMonth().pad(2) + '/' + data.getDate().pad(2))
                 widget.appendChild(original);
             }
 
@@ -205,10 +149,7 @@
             e.innerHTML = '';
             widget.appendChild(e);
 
-            e.setAttribute('data-actual',
-                data.getFullYear() + '/' +
-                data.getMonth().pad(2) + '/' +
-                data.getDate().pad(2))
+            e.setAttribute('data-actual', data.getFullYear() + '/' + data.getMonth().pad(2) + '/' + data.getDate().pad(2))
 
             var fila = document.createElement('tr');
             var titol = document.createElement('th');
@@ -223,16 +164,15 @@
             boto_next.innerHTML = '▸';
 
             titol.appendChild(boto_prev);
-            titol.appendChild(document.createElement('span')).innerHTML =
-                mesos[data.getMonth()] + '<span class="any">' + data.getFullYear() + '</span>';
+            titol.appendChild(document.createElement('span')).innerHTML = mesos[data.getMonth()] + '<span class="any">' + data.getFullYear() + '</span>';
             titol.appendChild(boto_next);
 
-            boto_prev.onclick = function() {
+            boto_prev.onclick = function () {
                 data.setMonth(data.getMonth() - 1);
                 calendari(widget, data);
             };
 
-            boto_next.onclick = function() {
+            boto_next.onclick = function () {
                 data.setMonth(data.getMonth() + 1);
                 calendari(widget, data);
             };
@@ -258,22 +198,25 @@
                     cela.appendChild(span);
                     span.innerHTML = actual.getDate();
 
-                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
-                    if (data.getDate() == actual.getDate() && data.getMonth() == actual.getMonth()) cela.className = 'avui';
+                    if (actual.getMonth() !== data.getMonth())
+                        cela.className = 'fora';
+
+                    if (data.getDate() == actual.getDate() && data.getMonth() == actual.getMonth())
+                        cela.className = 'avui';
+
                     actual.setDate(actual.getDate() + 1);
                     fila.appendChild(cela);
                 }
                 e.appendChild(fila);
             }
 
-            setTimeout(function() {
+            setTimeout(function () {
                 e.className = 'actiu';
                 original.className += diff === 0 ? ' amagat-dreta' : ' amagat-esquerra';
             }, 20);
 
             original.className = 'inactiu';
-
-            setTimeout(function() {
+            setTimeout(function () {
                 var inactius = widget.getElementsByClassName('inactiu')[0];
                 if (inactius) widget.removeChild(inactius);
             }, 300);
@@ -281,7 +224,7 @@
 
         calendari(document.getElementById('calendari'), new Date());
     </script>
+
 </body>
 
 </html>
-
