@@ -220,4 +220,29 @@
                     var span = document.createElement('span');
                     cela.appendChild(span);
                     span.innerHTML = actual.getDate();
-                    if
+                    if(actual.getMonth() !== data.getMonth())
+                        cela.className = 'fora';
+                    if(data.getDate() == actual.getDate() &&
+                        data.getMonth() == actual.getMonth())
+                        cela.className = 'avui';
+                    actual.setDate(actual.getDate()+1);
+                    fila.appendChild(cela);
+                }
+                e.appendChild(fila);
+            }
+            setTimeout(function() {
+                e.className = 'actiu';
+                original.className +=
+                diff === 0 ? ' amagat-dreta' : ' amagat-esquerra';
+            }, 20);
+            original.className = 'inactiu';
+            setTimeout(function() {
+                var inactius = document.getElementsByClassName('inactiu');
+                for(var i = 0; i < inactius.length; i++)
+                    widget.removeChild(inactius[i]);
+            }, 1000);
+        }
+        calendari(document.getElementById('calendari'), new Date());
+    </script>
+</body>
+</html>
